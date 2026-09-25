@@ -16,6 +16,9 @@ import ReportsPage from "./admin/pages/Reports";
 import SettingsPage from "./admin/pages/Settings";
 import PublicLayout from "./layout/PublicLayout";
 import { HeaderProvider } from "./admin/context/HeaderContext";
+import Login from "./auth/Login";
+import Register from "./auth/Register";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
 
@@ -27,7 +30,7 @@ function App() {
 
           <Route path="/" element={<PublicLayout />}>
             <Route
-              path="/"
+              index
               element={<Home />}
             />
             <Route path="/job-list" element={<JobList />} />
@@ -35,14 +38,18 @@ function App() {
             <Route path="/companies" element={<Companies />} />
             <Route path="/companies/:id" element={<CompaniesDetails />} />
             <Route path="/career-advice" element={<About />} />
+
+
           </Route>
 
+          {/* Auth Route */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
           {/* Admin Routes */}
-
-          <Route path="/admin" element={<HeaderProvider><AdminLayout /></HeaderProvider>}>
+          {/* <Route path="/admin" element={<HeaderProvider><AdminLayout /></HeaderProvider>}>
             <Route
-              path="/admin"
+              index 
               element={<AdminDashboard />}
             />
 
@@ -52,6 +59,18 @@ function App() {
             <Route path="applications" element={<ApplicationsPage />} />
             <Route path="reports" element={<ReportsPage />} />
             <Route path="settings" element={<SettingsPage />} />
+          </Route> */}
+          <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+            <Route path="/admin" element={    <HeaderProvider>
+<AdminLayout /></HeaderProvider>}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="users" element={<Users />} />
+              <Route path="companies" element={<CompaniesPage />} />
+              <Route path="jobs" element={<JobsPage />} />
+              <Route path="applications" element={<ApplicationsPage />} />
+              <Route path="reports" element={<ReportsPage />} />
+               <Route path="settings" element={<SettingsPage />} />
+            </Route>
           </Route>
 
         </Routes>

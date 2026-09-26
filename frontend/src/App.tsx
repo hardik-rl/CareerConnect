@@ -19,6 +19,8 @@ import { HeaderProvider } from "./admin/context/HeaderContext";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import Profile from "./admin/pages/Profile";
+import MyApplications from "./admin/pages/MyApplications";
 
 function App() {
 
@@ -61,16 +63,22 @@ function App() {
             <Route path="settings" element={<SettingsPage />} />
           </Route> */}
           <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
-            <Route path="/admin" element={    <HeaderProvider>
-<AdminLayout /></HeaderProvider>}>
+            <Route path="/admin" element={<HeaderProvider>
+              <AdminLayout /></HeaderProvider>}>
               <Route index element={<AdminDashboard />} />
               <Route path="users" element={<Users />} />
               <Route path="companies" element={<CompaniesPage />} />
               <Route path="jobs" element={<JobsPage />} />
               <Route path="applications" element={<ApplicationsPage />} />
               <Route path="reports" element={<ReportsPage />} />
-               <Route path="settings" element={<SettingsPage />} />
+              <Route path="settings" element={<SettingsPage />} />
             </Route>
+          </Route>
+
+          {/* Job Seeker Role */}
+          <Route element={<ProtectedRoute allowedRoles={["JOB_SEEKER"]} />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/applications" element={<MyApplications />} />
           </Route>
 
         </Routes>

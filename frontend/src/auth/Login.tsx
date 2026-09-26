@@ -1,8 +1,10 @@
 import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
-const Login = () => {
+const LoginPage = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -48,18 +50,16 @@ const Login = () => {
         throw new Error("Token was not returned by server.");
       }
 
-      localStorage.setItem("token", authData.token);
-      localStorage.setItem(
-        "user",
-        JSON.stringify(authData.user)
-      );
+      if (data.data?.token && data.data?.user) {
+        login(data.data.user, data.data.token);
 
-      // Role based redirect
-      if (authData.user.role === "ADMIN") {
-        navigate("/admin", { replace: true });
-      } else {
-        navigate("/", { replace: true });
+        if (data.data.user.role === "ADMIN") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
       }
+
     } catch (err: any) {
       console.error("LOGIN ERROR:", err);
 
@@ -199,4 +199,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

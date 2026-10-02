@@ -59,7 +59,7 @@ const COMPANY_DATA: Company = {
 };
 
 const CompanyDetails: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  useParams<{ id: string }>();
   const [company] = useState<Company>(COMPANY_DATA);
 
   return (

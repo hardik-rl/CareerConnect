@@ -1,4 +1,5 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 interface RegisterForm {
@@ -207,7 +208,7 @@ const Register = () => {
                 htmlFor="role"
                 className="block text-sm font-medium text-[#374151] mb-2"
               >
-                I am looking for
+                I am signing up as
               </label>
 
               <select
@@ -217,13 +218,8 @@ const Register = () => {
                 onChange={handleChange}
                 className="w-full h-12 rounded-lg border border-[#D1D5DB] px-4 text-sm bg-white outline-none transition focus:border-[#2563EB] focus:ring-2 focus:ring-blue-100"
               >
-                <option value="JOB_SEEKER">
-                  Job opportunities
-                </option>
-
-                <option value="EMPLOYER">
-                  Employees / Candidates
-                </option>
+                <option value="JOB_SEEKER">Job seeker</option>
+                <option value="EMPLOYER">Employer</option>
               </select>
             </div>
 

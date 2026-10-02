@@ -414,8 +414,8 @@ function HomePage() {
     const [location, setLocation] = useState("Ahmedabad, India");
     const [favorites, setFavorites] = useState<number[]>([]);
 
-    const toggleFavorite = (index) => {
-        setFavorites((current) =>
+    const toggleFavorite = (index: number) => {
+        setFavorites((current: number[]) =>
             current.includes(index) ? current.filter((item) => item !== index) : [...current, index]
         );
     };
@@ -475,7 +475,7 @@ function HomePage() {
 
                             <button
                                 onClick={handleSearch}
-                                className="h-[46px] shrink-0 rounded-[10px] bg-[#2954f2] px-6 text-[14px] font-semibold text-white transition hover:bg-[#1f46d6] sm:mr-[12px] sm:w-[126px]"
+                                className="h-[46px] w-full shrink-0 whitespace-nowrap rounded-[10px] bg-[#2954f2] px-6 text-[14px] font-semibold text-white transition hover:bg-[#1f46d6] sm:mr-[12px] sm:w-[126px]"
                             >
                                 Search Jobs
                             </button>
@@ -543,7 +543,11 @@ function HomePage() {
                                         className={`absolute right-[20px] top-[18px] text-[25px] leading-none transition ${
                                             isFavorite ? "text-[#2954f2]" : "text-[#616b7a] hover:text-[#2954f2]"
                                         }`}
-                                        aria-label="Save job"
+                                        aria-label={
+                                            isFavorite
+                                                ? `Remove ${job.title} from saved jobs`
+                                                : `Save ${job.title}`
+                                        }
                                     >
                                         {isFavorite ? "♥" : "♡"}
                                     </button>

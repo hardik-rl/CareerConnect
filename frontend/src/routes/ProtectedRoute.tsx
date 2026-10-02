@@ -69,7 +69,11 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
-  const { isAuthenticated, user, token } = useAuth();
+  const { isAuthenticated, user, token, loading } = useAuth();
+
+  if (loading) {
+    return <div className="min-h-screen bg-[#f7f8fa]" aria-busy="true" />;
+  }
 
   console.log("PROTECTED ROUTE:", {
     isAuthenticated,

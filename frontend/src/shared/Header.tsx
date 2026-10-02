@@ -1,12 +1,19 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import ProfileMenuButton from "./ProfileMenuButton";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const { user, isAuthenticated, logout } = useAuth();
+  const profilePath =
+    user?.role === "EMPLOYER"
+      ? "/employer/profile"
+      : user?.role === "ADMIN"
+        ? "/admin/profile"
+        : "/job-seeker/profile";
 
   const handleLogout = () => {
     logout();
@@ -147,54 +154,59 @@ function Header() {
                 </div>
 
                 {/* ================= PROFILE ================= */}
-                <button
-                  type="button"
-                  onClick={() => navigate("/profile")}
-                  className="flex w-full items-center gap-3 rounded-[8px] px-3 py-2.5 text-left text-[14px] text-[#374151] transition hover:bg-[#f5f7fa]"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="17"
-                    height="17"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M20 21a8 8 0 0 0-16 0" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-
-                  Profile
-                </button>
+                <ProfileMenuButton onClick={() => navigate(profilePath)} />
 
                 {/* ================= JOB SEEKER ================= */}
                 {user?.role === "JOB_SEEKER" && (
-                  <button
-                    type="button"
-                    onClick={() => navigate("/applications")}
-                    className="flex w-full items-center gap-3 rounded-[8px] px-3 py-2.5 text-left text-[14px] text-[#374151] transition hover:bg-[#f5f7fa]"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="17"
-                      height="17"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => navigate("/job-seeker/dashboard")}
+                      className="flex w-full items-center gap-3 rounded-[8px] px-3 py-2.5 text-left text-[14px] text-[#374151] transition hover:bg-[#f5f7fa]"
                     >
-                      <rect x="3" y="4" width="18" height="16" rx="2" />
-                      <path d="M7 8h10" />
-                      <path d="M7 12h6" />
-                    </svg>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="17"
+                        height="17"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect x="3" y="3" width="7" height="7" />
+                        <rect x="14" y="3" width="7" height="7" />
+                        <rect x="3" y="14" width="7" height="7" />
+                        <rect x="14" y="14" width="7" height="7" />
+                      </svg>
 
-                    Applications
-                  </button>
+                      Dashboard
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => navigate("/job-seeker/applications")}
+                      className="flex w-full items-center gap-3 rounded-[8px] px-3 py-2.5 text-left text-[14px] text-[#374151] transition hover:bg-[#f5f7fa]"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="17"
+                        height="17"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect x="3" y="4" width="18" height="16" rx="2" />
+                        <path d="M7 8h10" />
+                        <path d="M7 12h6" />
+                      </svg>
+
+                      Applications
+                    </button>
+                  </>
                 )}
 
                 {/* ================= EMPLOYER ================= */}
@@ -393,23 +405,29 @@ function Header() {
                 </div>
 
                 {/* ================= PROFILE ================= */}
-                <button
-                  type="button"
-                  onClick={() => handleNavigate("/profile")}
-                  className="rounded-[10px] border border-[#e0e5ed] px-4 py-3 text-left text-sm font-medium text-[#374151]"
-                >
-                  Profile
-                </button>
+                <ProfileMenuButton
+                  mobile
+                  onClick={() => handleNavigate(profilePath)}
+                />
 
                 {/* ================= JOB SEEKER ================= */}
                 {user?.role === "JOB_SEEKER" && (
-                  <button
-                    type="button"
-                    onClick={() => handleNavigate("/applications")}
-                    className="rounded-[10px] border border-[#e0e5ed] px-4 py-3 text-left text-sm font-medium text-[#374151]"
-                  >
-                    Applications
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => handleNavigate("/dashboard")}
+                      className="rounded-[10px] border border-[#e0e5ed] px-4 py-3 text-left text-sm font-medium text-[#374151]"
+                    >
+                      Dashboard
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleNavigate("/applications")}
+                      className="rounded-[10px] border border-[#e0e5ed] px-4 py-3 text-left text-sm font-medium text-[#374151]"
+                    >
+                      Applications
+                    </button>
+                  </>
                 )}
 
                 {/* ================= EMPLOYER ================= */}

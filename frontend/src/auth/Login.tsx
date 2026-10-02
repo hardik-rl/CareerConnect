@@ -1,4 +1,5 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
@@ -55,6 +56,10 @@ const LoginPage = () => {
 
         if (data.data.user.role === "ADMIN") {
           navigate("/admin");
+        } else if (data.data.user.role === "JOB_SEEKER") {
+          navigate("/job-seeker/profile");
+        } else if (data.data.user.role === "EMPLOYER") {
+          navigate("/employer/profile");
         } else {
           navigate("/");
         }

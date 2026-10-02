@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './components/Home'
 import JobList from './components/JobList'
 import JobDetails from "./components/JobDetails";
+import PublicJobSeekerJobDetails from "./jobseeker/pages/JobDetails";
 import Companies from "./components/Companies";
 import CompaniesDetails from "./components/CompaniesDetails";
 import About from "./components/About";
@@ -21,6 +22,10 @@ import Register from "./auth/Register";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Profile from "./admin/pages/Profile";
 import MyApplications from "./admin/pages/MyApplications";
+import JobSeekerProfile from "./jobseeker/pages/JobSeekerProfile";
+import JobSeekerDashboard from "./jobseeker/pages/Dashboard";
+import JobSeekerLayout from "./jobseeker/layouts/JobSeekerLayout";
+import JobSeekerApplications from "./jobseeker/pages/JobSeekerApplications";
 
 function App() {
 
@@ -72,13 +77,26 @@ function App() {
               <Route path="applications" element={<ApplicationsPage />} />
               <Route path="reports" element={<ReportsPage />} />
               <Route path="settings" element={<SettingsPage />} />
+              <Route path="profile" element={<Profile />} />
             </Route>
           </Route>
 
           {/* Job Seeker Role */}
           <Route element={<ProtectedRoute allowedRoles={["JOB_SEEKER"]} />}>
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/applications" element={<MyApplications />} />
+            <Route path="/job-seeker" element={<HeaderProvider>
+              <JobSeekerLayout /></HeaderProvider>}>
+              <Route path="/job-seeker/dashboard" element={<JobSeekerDashboard />} />
+                <Route path="/job-seeker/jobs/:id" element={<PublicJobSeekerJobDetails />} />
+              <Route path="/job-seeker/profile" element={<JobSeekerProfile />} />
+              <Route path="/job-seeker/applications" element={<JobSeekerApplications />} />
+            </Route>
+            {/* <Route path="/dashboard" element={<JobSeekerDashboard />} /> */}
+          </Route>
+
+          {/* Job Seeker Role */}
+          <Route element={<ProtectedRoute allowedRoles={["EMPLOYER"]} />}>
+            <Route path="/employer/profile" element={<Profile />} />
+            <Route path="/employer/applications" element={<MyApplications />} />
           </Route>
 
         </Routes>

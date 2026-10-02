@@ -1,59 +1,7 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Heart, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
-
-type Job = {
-  id: number;
-  title: string;
-  company: string;
-  location: string;
-  type: "Full-time" | "Contract" | "Part-time";
-};
-
-const JOBS: Job[] = [
-  {
-    id: 1,
-    title: "Senior React Developer",
-    company: "TechForge",
-    location: "Remote • India",
-    type: "Full-time",
-  },
-  {
-    id: 2,
-    title: "UX Designer",
-    company: "PixelCraft",
-    location: "Ahmedabad • Hybrid",
-    type: "Full-time",
-  },
-  {
-    id: 3,
-    title: "Frontend Engineer",
-    company: "CloudScale",
-    location: "Pune • Hybrid",
-    type: "Full-time",
-  },
-  {
-    id: 4,
-    title: "Product Manager",
-    company: "Northstar",
-    location: "Remote • India",
-    type: "Full-time",
-  },
-  {
-    id: 5,
-    title: "UI Developer",
-    company: "KiteWorks",
-    location: "Mumbai • Hybrid",
-    type: "Contract",
-  },
-  {
-    id: 6,
-    title: "Software Engineer",
-    company: "Vertex",
-    location: "Remote • India",
-    type: "Full-time",
-  },
-];
+import { JOBS } from "../data/jobs";
 
 const FILTERS = [
   { label: "Job type", placeholder: "Select job type", options: ["Full-time", "Part-time", "Contract", "Internship"] },
@@ -65,8 +13,6 @@ const FILTERS = [
 const JobList = () => {
   const [saved, setSaved] = useState<string[]>([]);
   const [values, setValues] = useState<Record<string, string>>({});
-
-  const jobs = useMemo(() => JOBS, []);
 
   return (
     <div className="min-h-screen bg-background font-sans">
@@ -119,7 +65,9 @@ const JobList = () => {
 
           <div className="min-w-0 flex-1">
             <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 sm:flex sm:justify-between">
-              <p className="min-w-0 truncate text-[17px] font-bold text-foreground">1,248 jobs found</p>
+              <p className="min-w-0 truncate text-[17px] font-bold text-foreground">
+                {JOBS.length} {JOBS.length === 1 ? "job" : "jobs"} found
+              </p>
               <div className="relative">
                 <select
                   className="appearance-none rounded-lg border border-border bg-card py-[13px] pl-4 pr-10 text-[15px] text-foreground outline-hidden focus:border-primary"
@@ -134,7 +82,7 @@ const JobList = () => {
             </div>
 
             <ul className="mt-8 grid gap-8 sm:grid-cols-2">
-              {jobs.map((job) => {
+              {JOBS.map((job) => {
                 const isSaved = saved.includes(job.title);
                 return (
                   <li

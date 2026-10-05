@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import ProfileMenuButton from "./ProfileMenuButton";
+import { IdCard } from "lucide-react";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -214,29 +215,6 @@ function Header() {
                   <>
                     <button
                       type="button"
-                      onClick={() => navigate("/employer/jobs")}
-                      className="flex w-full items-center gap-3 rounded-[8px] px-3 py-2.5 text-left text-[14px] text-[#374151] transition hover:bg-[#f5f7fa]"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="17"
-                        height="17"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <rect x="3" y="7" width="18" height="13" rx="2" />
-                        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                      </svg>
-
-                      My Jobs
-                    </button>
-
-                    <button
-                      type="button"
                       onClick={() => navigate("/employer/applications")}
                       className="flex w-full items-center gap-3 rounded-[8px] px-3 py-2.5 text-left text-[14px] text-[#374151] transition hover:bg-[#f5f7fa]"
                     >
@@ -258,6 +236,16 @@ function Header() {
                       </svg>
 
                       Applications
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => navigate("/employer/managejobs")}
+                      className="flex w-full items-center gap-3 rounded-[8px] px-3 py-2.5 text-left text-[14px] text-[#374151] transition hover:bg-[#f5f7fa]"
+                    >
+                      <IdCard />
+
+                      Manage Jobs
                     </button>
                   </>
                 )}

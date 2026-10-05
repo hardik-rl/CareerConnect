@@ -21,12 +21,17 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Profile from "./admin/pages/Profile";
-import MyApplications from "./admin/pages/MyApplications";
 import JobSeekerProfile from "./jobseeker/pages/JobSeekerProfile";
 import JobSeekerDashboard from "./jobseeker/pages/Dashboard";
 import JobSeekerLayout from "./jobseeker/layouts/JobSeekerLayout";
 import JobSeekerApplications from "./jobseeker/pages/JobSeekerApplications";
 import NotFound from "./pages/NotFound";
+import EmployerDashboard from "./employer/pages/Dashboard";
+import EmployerLayout from "./employer/layouts/EmployerLayout";
+import EmployerProfile from "./employer/pages/EmployerProfile";
+import EmployerApplications from "./employer/pages/EmployerApplications";
+import EmployerManageJobs from "./employer/pages/EmployerManageJobs";
+import PostNewJob from "./employer/pages/PostNewJob";
 
 function App() {
 
@@ -94,8 +99,14 @@ function App() {
 
           {/* Job Seeker Role */}
           <Route element={<ProtectedRoute allowedRoles={["EMPLOYER"]} />}>
-            <Route path="/employer/profile" element={<Profile />} />
-            <Route path="/employer/applications" element={<MyApplications />} />
+            <Route path="/employer" element={<HeaderProvider>
+              <EmployerLayout /></HeaderProvider>}>
+              <Route path="/employer/profile" element={<EmployerProfile />} />
+              <Route path="/employer/dashboard" element={<EmployerDashboard />} />
+              <Route path="/employer/applications" element={<EmployerApplications />} />
+              <Route path="/employer/managejobs" element={<EmployerManageJobs />} />
+              <Route path="/employer/postnewjob" element={<PostNewJob />} />
+            </Route>
           </Route>
 
           <Route path="*" element={<NotFound />} />

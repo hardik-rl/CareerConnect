@@ -59,7 +59,7 @@ const LoginPage = () => {
         } else if (data.data.user.role === "JOB_SEEKER") {
           navigate("/job-seeker/profile");
         } else if (data.data.user.role === "EMPLOYER") {
-          navigate("/employer/profile");
+          navigate("/employer/dashboard");
         } else {
           navigate("/");
         }

@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+
 interface AdminHeaderProps {
   onMenuClick: () => void;
   title?: string;
@@ -9,6 +13,16 @@ const AdminHeader = ({
   title = "Overview",
   subtitle = "Monitor your platform activity and performance",
 }: AdminHeaderProps) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    setMenuOpen(false);
+    navigate("/login");
+  };
+
   return (
     <header
       className="
@@ -66,20 +80,43 @@ const AdminHeader = ({
         </div>
       </div>
 
-      {/* Avatar */}
-      <div
-        className="
-          flex h-10 w-10 sm:h-12 sm:w-12
-          shrink-0
-          items-center justify-center
-          rounded-full
-          bg-[#eef0ff]
-          text-[#273247]
-        "
-      >
-        <span className="text-xs sm:text-sm font-semibold">
-          HP
-        </span>
+      {/* Account menu */}
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => setMenuOpen((open) => !open)}
+          aria-label="Open account menu"
+          aria-haspopup="menu"
+          aria-expanded={menuOpen}
+          className="
+            flex h-10 w-10 sm:h-12 sm:w-12
+            shrink-0
+            items-center justify-center
+            rounded-full
+            bg-[#eef0ff]
+            text-[#273247]
+            hover:bg-[#e1e5ff]
+            transition-colors
+          "
+        >
+          <span className="text-xs sm:text-sm font-semibold">HP</span>
+        </button>
+
+        {menuOpen && (
+          <div
+            role="menu"
+            className="absolute right-0 z-50 mt-2 w-40 rounded-lg border border-[#e5e7eb] bg-white p-1 shadow-lg"
+          >
+            <button
+              type="button"
+              role="menuitem"
+              onClick={handleLogout}
+              className="w-full rounded-md px-3 py-2 text-left text-sm font-medium text-[#b42318] transition-colors hover:bg-[#fef3f2]"
+            >
+              Log out
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );

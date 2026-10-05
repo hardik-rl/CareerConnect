@@ -26,6 +26,7 @@ import JobSeekerProfile from "./jobseeker/pages/JobSeekerProfile";
 import JobSeekerDashboard from "./jobseeker/pages/Dashboard";
 import JobSeekerLayout from "./jobseeker/layouts/JobSeekerLayout";
 import JobSeekerApplications from "./jobseeker/pages/JobSeekerApplications";
+import NotFound from "./pages/NotFound";
 
 function App() {
 
@@ -45,8 +46,6 @@ function App() {
             <Route path="/companies" element={<Companies />} />
             <Route path="/companies/:id" element={<CompaniesDetails />} />
             <Route path="/career-advice" element={<About />} />
-
-
           </Route>
 
           {/* Auth Route */}
@@ -86,7 +85,7 @@ function App() {
             <Route path="/job-seeker" element={<HeaderProvider>
               <JobSeekerLayout /></HeaderProvider>}>
               <Route path="/job-seeker/dashboard" element={<JobSeekerDashboard />} />
-                <Route path="/job-seeker/jobs/:id" element={<PublicJobSeekerJobDetails />} />
+              <Route path="/job-seeker/jobs/:id" element={<PublicJobSeekerJobDetails />} />
               <Route path="/job-seeker/profile" element={<JobSeekerProfile />} />
               <Route path="/job-seeker/applications" element={<JobSeekerApplications />} />
             </Route>
@@ -98,6 +97,8 @@ function App() {
             <Route path="/employer/profile" element={<Profile />} />
             <Route path="/employer/applications" element={<MyApplications />} />
           </Route>
+
+          <Route path="*" element={<NotFound />} />
 
         </Routes>
       </BrowserRouter>

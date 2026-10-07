@@ -32,6 +32,8 @@ import EmployerProfile from "./employer/pages/EmployerProfile";
 import EmployerApplications from "./employer/pages/EmployerApplications";
 import EmployerManageJobs from "./employer/pages/EmployerManageJobs";
 import PostNewJob from "./employer/pages/PostNewJob";
+import ResetPassword from "./auth/ResetPassword";
+import ForgotPassword from "./auth/ForgotPassword";
 
 function App() {
 
@@ -56,6 +58,15 @@ function App() {
           {/* Auth Route */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path="/forgot-password"
+            element={<ForgotPassword />}
+          />
+
+          <Route
+            path="/reset-password"
+            element={<ResetPassword />}
+          />
 
           {/* Admin Routes */}
           {/* <Route path="/admin" element={<HeaderProvider><AdminLayout /></HeaderProvider>}>

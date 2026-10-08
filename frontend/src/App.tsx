@@ -97,7 +97,7 @@ function App() {
           </Route>
 
           {/* Job Seeker Role */}
-          <Route element={<ProtectedRoute allowedRoles={["JOB_SEEKER"]} />}>
+          {/* <Route element={<ProtectedRoute allowedRoles={["JOB_SEEKER"]} />}>
             <Route path="/job-seeker" element={<HeaderProvider>
               <JobSeekerLayout /></HeaderProvider>}>
               <Route path="/job-seeker/dashboard" element={<JobSeekerDashboard />} />
@@ -105,11 +105,17 @@ function App() {
               <Route path="/job-seeker/profile" element={<JobSeekerProfile />} />
               <Route path="/job-seeker/applications" element={<JobSeekerApplications />} />
             </Route>
-            {/* <Route path="/dashboard" element={<JobSeekerDashboard />} /> */}
+          </Route> */}
+
+          <Route path="/job-seeker" element={<JobSeekerLayout />}>
+            <Route path="dashboard" element={<JobSeekerDashboard />} />
+            <Route path="jobs/:id" element={<PublicJobSeekerJobDetails />} />
+            <Route path="profile" element={<JobSeekerProfile />} />
+            <Route path="applications" element={<JobSeekerApplications />} />
           </Route>
 
-          {/* Job Seeker Role */}
-          <Route element={<ProtectedRoute allowedRoles={["EMPLOYER"]} />}>
+          {/* Employer Role */}
+          {/* <Route element={<ProtectedRoute allowedRoles={["EMPLOYER"]} />}>
             <Route path="/employer" element={<HeaderProvider>
               <EmployerLayout /></HeaderProvider>}>
               <Route path="/employer/profile" element={<EmployerProfile />} />
@@ -118,6 +124,14 @@ function App() {
               <Route path="/employer/managejobs" element={<EmployerManageJobs />} />
               <Route path="/employer/postnewjob" element={<PostNewJob />} />
             </Route>
+          </Route> */}
+
+          <Route path="/employer" element={<EmployerLayout />}>
+            <Route path="profile" element={<EmployerProfile />} />
+            <Route path="dashboard" element={<EmployerDashboard />} />
+            <Route path="applications" element={<EmployerApplications />} />
+            <Route path="managejobs" element={<EmployerManageJobs />} />
+            <Route path="postnewjob" element={<PostNewJob />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

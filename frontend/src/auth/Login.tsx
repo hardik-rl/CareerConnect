@@ -23,60 +23,64 @@ const LoginPage = () => {
     });
   };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    setError("");
+  setError("");
 
-    if (!form.email || !form.password) {
-      setError("Please enter email and password.");
+  if (!form.email.trim() || !form.password) {
+    setError("Please enter email and password.");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    const response = await api.post("/api/auth/login", {
+      email: form.email.trim(),
+      password: form.password,
+    });
+
+    console.log("LOGIN RESPONSE:", response.data);
+
+    const authData = response.data?.data;
+
+    if (!authData?.token || !authData?.user) {
+      setError("Invalid login response from server.");
       return;
     }
 
-    try {
-      setLoading(true);
+    login(authData.user, authData.token);
 
-      const response = await api.post(
-        "/api/auth/login",
-        form
-      );
+    switch (authData.user.role) {
+      case "ADMIN":
+        navigate("/admin");
+        break;
 
-      const data = response.data;
+      case "JOB_SEEKER":
+        navigate("/job-seeker/dashboard");
+        break;
 
-      console.log("LOGIN RESPONSE:", data);
+      case "EMPLOYER":
+        navigate("/employer/dashboard");
+        break;
 
-      const authData = data.data;
-
-      if (!authData?.token) {
-        throw new Error("Token was not returned by server.");
-      }
-
-      if (data.data?.token && data.data?.user) {
-        login(data.data.user, data.data.token);
-
-        if (data.data.user.role === "ADMIN") {
-          navigate("/admin");
-        } else if (data.data.user.role === "JOB_SEEKER") {
-          navigate("/job-seeker/profile");
-        } else if (data.data.user.role === "EMPLOYER") {
-          navigate("/employer/dashboard");
-        } else {
-          navigate("/");
-        }
-      }
-
-    } catch (err: any) {
-      console.error("LOGIN ERROR:", err);
-
-      setError(
-        err?.response?.data?.message ||
-        err?.message ||
-        "Something went wrong."
-      );
-    } finally {
-      setLoading(false);
+      default:
+        navigate("/");
     }
-  };
+  } catch (err: any) {
+    console.error("LOGIN ERROR:", err);
+
+    const message =
+      err?.response?.data?.message ||
+      "Invalid email or password .";
+
+    setError(message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center px-4 py-10">

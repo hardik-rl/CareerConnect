@@ -25,11 +25,18 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    // Only handle 401 for authenticated API requests.
+    // Do NOT redirect when login itself fails.
+    const requestUrl = error.config?.url || "";
+
+    const isLoginRequest = requestUrl.includes("/api/auth/login");
+
+    if (error.response?.status === 401 && !isLoginRequest) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
 
-      window.location.href = "/login";
+      // Don't use window.location.href because it causes a full page reload.
+      // Authentication state should be handled by AuthContext / ProtectedRoute.
     }
 
     return Promise.reject(error);

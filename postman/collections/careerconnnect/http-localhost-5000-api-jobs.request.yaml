@@ -1,0 +1,59 @@
+$kind: http-request
+name: http://localhost:5000/api/jobs
+description: ""
+url: http://localhost:5000/api/jobs
+method: POST
+headers:
+  - key: Authorization
+    value: Bearer {{json_web_token_05nf}}
+    disabled: true
+    description: ""
+  - key: Content-Type
+    value: application/json
+    disabled: true
+    description: ""
+queryParams:
+  - key: Authorization
+    value: Bearer {{json_web_token_05nf}}
+    disabled: true
+    description: ""
+  - key: Content-Type
+    value: application/json
+    disabled: true
+    description: ""
+body:
+  type: json
+  content: "{\r
+
+    \  \"title\": \"Senior React Developer\",\r
+
+    \  \"description\": \"We are looking for an experienced React developer to join our frontend team.\",\r
+
+    \  \"requirements\": [\r
+
+    \    \"React.js\",\r
+
+    \    \"JavaScript\",\r
+
+    \    \"TypeScript\",\r
+
+    \    \"Tailwind CSS\"\r
+
+    \  ],\r
+
+    \  \"location\": \"Ahmedabad, India\",\r
+
+    \  \"salaryMin\": 600000,\r
+
+    \  \"salaryMax\": 1000000,\r
+
+    \  \"jobType\": \"FULL_TIME\",\r
+
+    \  \"experienceLevel\": \"SENIOR\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_05nf}}"
+order: 3775440926857337

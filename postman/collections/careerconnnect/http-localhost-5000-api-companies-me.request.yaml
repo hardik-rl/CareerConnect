@@ -1,0 +1,23 @@
+$kind: http-request
+name: http://localhost:5000/api/companies/me
+description: ""
+url: http://localhost:5000/api/companies/me
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"TechForge\",\r
+
+    \  \"description\": \"Technology and software development company.\",\r
+
+    \  \"website\": \"https://example.com\",\r
+
+    \  \"location\": \"Ahmedabad, India\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_05nf}}"
+order: 3775440926858337

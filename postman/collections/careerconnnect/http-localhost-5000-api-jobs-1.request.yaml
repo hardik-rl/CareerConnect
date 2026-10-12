@@ -1,0 +1,8 @@
+$kind: http-request
+name: http://localhost:5000/api/jobs
+description: ""
+url: http://localhost:5000/api/jobs
+method: GET
+auth:
+  type: noauth
+order: 3775440926860337

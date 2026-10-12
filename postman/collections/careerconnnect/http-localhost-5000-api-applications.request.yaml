@@ -1,0 +1,19 @@
+$kind: http-request
+name: http://localhost:5000/api/applications
+description: ""
+url: http://localhost:5000/api/applications
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"jobId\": \"cmv23692s00000kuivdo8pa19\",\r
+
+    \  \"coverLetter\": \"I am interested in the Senior React Developer position. I have experience with React.js, JavaScript, TypeScript, and Tailwind CSS.\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_1ce6}}"
+order: 3775440926859337

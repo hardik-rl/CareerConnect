@@ -5,6 +5,9 @@ import prisma from "./lib/prisma.js";
 import authRoutes from "./routes/auth.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
 import passwordRoutes from "./routes/passwordRoutes.js";
+import applicationRoutes from "./routes/application.routes.js";
+import jobRoutes from "./routes/job.routes.js";
+import companyRoutes from "./routes/company.routes.js";
 
 dotenv.config();
 
@@ -56,6 +59,9 @@ app.get("/api/test-db", async (_req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/auth", passwordRoutes);
+app.use("/api/applications", applicationRoutes);
+app.use("/api/jobs", jobRoutes);
+app.use("/api/companies", companyRoutes);
 
 app.listen(PORT, () => {
   console.log(`CareerConnect server running on port ${PORT}`);

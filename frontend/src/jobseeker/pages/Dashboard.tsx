@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import api from "../../services/api";
+import { useEffect, useState } from "react";
 
 const stats = [
   { label: "Applications", value: "18", change: "↑ 4 this month" },
@@ -7,32 +9,6 @@ const stats = [
   { label: "Interview Invites", value: "4", change: "↑ 2 this month" },
 ];
 
-const recommendedJobs = [
-  {
-    id: 1,
-    initials: "Te",
-    title: "Senior React Developer",
-    company: "TechForge",
-    details: "Remote India",
-    salary: "₹12–18 LPA",
-  },
-  {
-    id: 2,
-    initials: "Cl",
-    title: "Frontend Engineer",
-    company: "CloudScale",
-    details: "Pune · Hybrid",
-    salary: "₹10–15 LPA",
-  },
-  {
-    id: 3,
-    initials: "Ki",
-    title: "UI Developer",
-    company: "KiteWorks",
-    details: "Mumbai · Hybrid",
-    salary: "₹8–12 LPA",
-  },
-];
 
 const recentApplications = [
   { company: "TechForge", status: "Interview", date: "Oct 02" },
@@ -41,63 +17,44 @@ const recentApplications = [
   { company: "Vertex", status: "Rejected", date: "Sep 12" },
 ];
 
+
+type RecommendedJob = {
+  id: string;
+  title: string;
+  location: string;
+  jobType: string;
+  salaryMin: number | null;
+  salaryMax: number | null;
+  company: {
+    id: string;
+    name: string;
+  };
+};
+
 function JobSeekerDashboard() {
+
+  const [recommendedJobsData, setRecommendedJobsData] = useState<RecommendedJob[]>([]);
+  const [jobsLoading, setJobsLoading] = useState(true);
+
+  const fetchJobs = async () => {
+    try {
+      const response = await api.get("/api/jobs");
+      console.log(response, "response");
+
+      setRecommendedJobsData(response.data.data);
+    } catch (error) {
+      console.error("Failed to fetch recommended jobs:", error);
+    } finally {
+      setJobsLoading(false);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
   return (
     <div className=" bg-[#f7f8fa] text-[#202938] [font-family:Inter,ui-sans-serif,system-ui,sans-serif]">
-      {/* <header className="mx-auto h-[54px] max-w-[1008px] bg-white">
-        <div className="flex h-full items-center justify-between px-5 sm:px-[45px]">
-          <Link
-            to="/"
-            className="shrink-0 text-[15px] font-bold tracking-[-0.35px] text-[#151b27]"
-          >
-            CareerConnect
-          </Link>
-
-          <nav className="hidden items-center gap-10 md:flex">
-            <Link
-              to="/job-list"
-              className="text-[9px] font-semibold text-[#202531] transition hover:text-[#6c69d8]"
-            >
-              Find Jobs
-            </Link>
-            <Link
-              to="/companies"
-              className="text-[9px] font-semibold text-[#202531] transition hover:text-[#6c69d8]"
-            >
-              Companies
-            </Link>
-            <Link
-              to="/career-advice"
-              className="text-[9px] font-semibold text-[#202531] transition hover:text-[#6c69d8]"
-            >
-              Career Advice
-            </Link>
-          </nav>
-
-          <div className="flex items-center gap-5 sm:gap-11">
-            <Link
-              to="/job-list"
-              className="hidden text-[9px] font-semibold text-[#202531] transition hover:text-[#6c69d8] sm:inline"
-            >
-              Saved Jobs
-            </Link>
-            <Link
-              to="/job-seeker/profile"
-              className="hidden text-[9px] font-semibold text-[#202531] transition hover:text-[#6c69d8] sm:inline"
-            >
-              Job Seeker
-            </Link>
-            <Link
-              to="/job-seeker/profile"
-              aria-label="Open your profile"
-              className="flex h-[29px] w-[29px] items-center justify-center rounded-full bg-[#f0efff] text-[8px] font-semibold text-[#716be2] transition hover:ring-2 hover:ring-[#716be2]/20"
-            >
-              {initials}
-            </Link>
-          </div>
-        </div>
-      </header> */}
-
       <main className="mx-auto bg-[#f7f8fa] px-5 pb-12 pt-[32px] sm:px-[16px]">
         <section aria-labelledby="dashboard-title">
           <h1
@@ -145,7 +102,7 @@ function JobSeekerDashboard() {
               Recommended for you
             </h2>
             <ul className="mt-[7px]">
-              {recommendedJobs.map((job) => (
+              {/* {recommendedJobs.map((job) => (
                 <li
                   key={job.title}
                   className="flex min-h-[63px] items-center gap-3"
@@ -171,7 +128,55 @@ function JobSeekerDashboard() {
                     View Job
                   </Link>
                 </li>
-              ))}
+              ))} */}
+
+              {jobsLoading ? (
+                <li className="py-6 text-center text-sm text-[#828b9b]">
+                  Loading jobs...
+                </li>
+              ) : recommendedJobsData.length === 0 ? (
+                <li className="py-6 text-center text-sm text-[#828b9b]">
+                  No jobs available right now.
+                </li>
+              ) : (
+                recommendedJobsData.map((job) => (
+                  <li
+                    key={job.id}
+                    className="flex min-h-[63px] items-center gap-3"
+                  >
+                    <div className="flex h-[33px] w-[33px] shrink-0 items-center justify-center rounded-full bg-[#f0efff] text-[8px] font-semibold text-[#7c77dd]">
+                      {job.company.name.slice(0, 2)}
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <h3 className="truncate text-[11px] font-semibold leading-[14px] text-[#303846]">
+                        {job.title}
+                      </h3>
+
+                      <p className="mt-[3px] truncate text-[9px] leading-[12px] text-[#929aaa]">
+                        {job.company.name} · {job.location}
+                      </p>
+                    </div>
+
+                    <span className="hidden min-w-[84px] rounded-full bg-[#f0efff] px-2 py-[5px] text-center text-[9px] font-semibold leading-[11px] text-[#7772d9] sm:inline-block">
+                      {job.salaryMin != null && job.salaryMax != null
+                        ? `₹${job.salaryMin.toLocaleString("en-IN")}–${job.salaryMax.toLocaleString("en-IN")}`
+                        : job.salaryMin != null
+                          ? `From ₹${job.salaryMin.toLocaleString("en-IN")}`
+                          : job.salaryMax != null
+                            ? `Up to ₹${job.salaryMax.toLocaleString("en-IN")}`
+                            : "Salary N/A"}
+                    </span>
+
+                    <Link
+                      to={`/job-seeker/jobs/${job.id}`}
+                      className="shrink-0 rounded-[6px] bg-[#111521] px-[15px] py-[6px] text-[9px] font-semibold leading-[11px] text-white transition hover:bg-[#303748]"
+                    >
+                      View Job
+                    </Link>
+                  </li>
+                ))
+              )}
             </ul>
           </section>
 
@@ -195,13 +200,12 @@ function JobSeekerDashboard() {
                     {application.company}
                   </span>
                   <span
-                    className={`rounded-full px-2 py-[5px] text-center text-[9px] font-semibold leading-[11px] ${
-                      application.status === "Interview"
-                        ? "bg-[#e5f7ef] text-[#4ba981]"
-                        : application.status === "Rejected"
-                          ? "bg-[#ffeded] text-[#e78383]"
-                          : "bg-[#f0efff] text-[#7772d9]"
-                    }`}
+                    className={`rounded-full px-2 py-[5px] text-center text-[9px] font-semibold leading-[11px] ${application.status === "Interview"
+                      ? "bg-[#e5f7ef] text-[#4ba981]"
+                      : application.status === "Rejected"
+                        ? "bg-[#ffeded] text-[#e78383]"
+                        : "bg-[#f0efff] text-[#7772d9]"
+                      }`}
                   >
                     {application.status}
                   </span>

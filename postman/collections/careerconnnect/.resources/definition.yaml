@@ -3,3 +3,15 @@ variables:
   - key: json_web_token_174j
     secret: true
     disabled: false
+  - key: json_web_token_0h3s
+    secret: true
+    disabled: false
+  - key: json_web_token_05nf
+    secret: true
+    disabled: false
+  - key: bearer_token_119c
+    secret: true
+    disabled: false
+  - key: json_web_token_1ce6
+    secret: true
+    disabled: false

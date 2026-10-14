@@ -22,10 +22,39 @@
 
 // export default router;
 
+// import { Router } from "express";
+// import {
+//   getMyApplications,
+//   applyForJob,
+// } from "../controllers/application.controller.js";
+// import {
+//   authenticate,
+//   authorize,
+// } from "../middleware/auth.middleware.js";
+
+// const router = Router();
+
+// router.get(
+//   "/me",
+//   authenticate,
+//   authorize("JOB_SEEKER"),
+//   getMyApplications,
+// );
+
+// router.post(
+//   "/",
+//   authenticate,
+//   authorize("JOB_SEEKER"),
+//   applyForJob,
+// );
+
+// export default router;
+
+
 import { Router } from "express";
 import {
-  getMyApplications,
   applyForJob,
+  getMyApplications,
 } from "../controllers/application.controller.js";
 import {
   authenticate,
@@ -35,17 +64,17 @@ import {
 const router = Router();
 
 router.get(
-  "/me",
+  "/my-applications",
   authenticate,
   authorize("JOB_SEEKER"),
-  getMyApplications,
+  getMyApplications
 );
 
 router.post(
-  "/",
+  "/apply",
   authenticate,
   authorize("JOB_SEEKER"),
-  applyForJob,
+  applyForJob
 );
 
 export default router;

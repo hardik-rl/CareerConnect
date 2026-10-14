@@ -354,7 +354,7 @@ const JobSeekerJobDetails = () => {
         const response = await api.get<{
           success: boolean;
           data: ApiJob;
-        }>(`/api/jobs/${id}`);
+        }>(`/jobs/${id}`);
 
         if (!cancelled) {
           setJob(response.data.data);
@@ -433,7 +433,7 @@ const handleApply = async () => {
   setApplyMessage("");
 
   try {
-    const response = await api.post("/api/applications", {
+    const response = await api.post("/applications", {
       jobId: job.id,
     });
 

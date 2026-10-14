@@ -67,7 +67,7 @@ const JobSeekerProfile: React.FC = () => {
       setLoading(true);
       setError("");
 
-      const response = await api.get<ProfileResponse>("/api/profile/me");
+      const response = await api.get<ProfileResponse>("/profile/me");
 
       if (!response.data?.success) {
         throw new Error("Unable to load profile.");
@@ -136,7 +136,7 @@ const JobSeekerProfile: React.FC = () => {
         githubUrl: formData.githubUrl.trim(),
       };
 
-      const response = await api.put("/api/profile/me", payload);
+      const response = await api.put("/profile/me", payload);
 
       if (response.data.success) {
         const updatedUser = response.data.data.user;

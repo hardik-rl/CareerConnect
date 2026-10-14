@@ -85,37 +85,6 @@ export const createJob = async (
   }
 };
 
-// export const getJobs = async (_req: AuthRequest, res: Response) => {
-//   try {
-//     const jobs = await prisma.job.findMany({
-//       include: {
-//         company: {
-//           select: {
-//             id: true,
-//             name: true,
-//           },
-//         },
-//       },
-//       orderBy: {
-//         createdAt: "desc",
-//       },
-//     });
-
-//     return res.status(200).json({
-//       success: true,
-//       data: jobs,
-//     });
-//   } catch (error) {
-//     console.error("Get jobs error:", error);
-
-//     return res.status(500).json({
-//       success: false,
-//       message: "Unable to fetch jobs",
-//     });
-//   }
-// };
-
-
 export const getJobs = async (_req: AuthRequest, res: Response) => {
   try {
     const jobs = await prisma.job.findMany({
@@ -149,7 +118,6 @@ export const getJobs = async (_req: AuthRequest, res: Response) => {
     });
   }
 };
-
 
 export const getJobById = async (req: AuthRequest, res: Response) => {
   try {

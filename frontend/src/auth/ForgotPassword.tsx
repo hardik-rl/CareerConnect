@@ -21,7 +21,7 @@ const ForgotPassword = () => {
 
     try {
       setLoading(true);
-      const response = await api.post("/api/auth/forgot-password", {
+      const response = await api.post("/auth/forgot-password", {
         email: email.trim(),
       });
 

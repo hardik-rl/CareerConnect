@@ -36,7 +36,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
   try {
     setLoading(true);
 
-    const response = await api.post("/api/auth/login", {
+    const response = await api.post("/auth/login", {
       email: form.email.trim(),
       password: form.password,
     });

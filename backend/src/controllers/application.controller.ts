@@ -137,3 +137,144 @@ export const applyForJob = async (
     });
   }
 };
+
+
+
+// Admin: Get all applications
+
+export const getAllApplicationsForAdmin = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  try {
+    const applications = await prisma.application.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+        job: {
+          select: {
+            id: true,
+            title: true,
+            location: true,
+            jobType: true,
+            company: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return res.json({
+      success: true,
+      count: applications.length,
+      data: applications,
+    });
+  } catch (error) {
+    console.error("Get all applications error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to load applications",
+    });
+  }
+};
+
+
+// Admin: Update application status
+
+export const updateApplicationStatus = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const allowedStatuses = [
+      "PENDING",
+      "REVIEWED",
+      "SHORTLISTED",
+      "REJECTED",
+      "ACCEPTED",
+    ] as const;
+
+    if (
+      typeof status !== "string" ||
+      !allowedStatuses.includes(
+        status as (typeof allowedStatuses)[number]
+      )
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid application status",
+        allowedStatuses,
+      });
+    }
+
+    const existingApplication = await prisma.application.findUnique({
+      where: { id },
+    });
+
+    if (!existingApplication) {
+      return res.status(404).json({
+        success: false,
+        message: "Application not found",
+      });
+    }
+
+    const updatedApplication = await prisma.application.update({
+      where: { id },
+      data: {
+        status: status as (typeof allowedStatuses)[number],
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+        job: {
+          select: {
+            id: true,
+            title: true,
+            location: true,
+            jobType: true,
+            company: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return res.json({
+      success: true,
+      message: "Application status updated successfully",
+      data: updatedApplication,
+    });
+  } catch (error) {
+    console.error("Update application status error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to update application status",
+    });
+  }
+};

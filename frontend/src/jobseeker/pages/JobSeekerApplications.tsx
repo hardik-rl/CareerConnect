@@ -403,7 +403,7 @@ const JobSeekerApplications = () => {
 
       // VITE_API_URL=http://localhost:5000/api
       // Axios automatically attaches the saved Bearer token.
-      const response = await api.get("/applications/my-applications");
+      const response = await api.get("/applications");
 
       const data: ApiApplication[] = response.data.data;
 

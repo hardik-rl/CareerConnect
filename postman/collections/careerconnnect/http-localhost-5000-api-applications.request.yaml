@@ -1,7 +1,7 @@
 $kind: http-request
-name: http://localhost:5000/api/applications
+name: http://localhost:5000/api/applications/apply
 description: ""
-url: http://localhost:5000/api/applications
+url: 'http://localhost:5000/api/applications/apply'
 method: POST
 body:
   type: json

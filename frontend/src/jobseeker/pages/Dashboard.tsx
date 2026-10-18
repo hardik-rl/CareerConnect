@@ -383,7 +383,7 @@ function JobSeekerDashboard() {
         setApplicationsLoading(true);
 
         // Update this endpoint if your backend uses a different route.
-        const response = await api.get("/applications/my-applications");
+        const response = await api.get("/applications");
         const data = response.data?.data;
 
         if (isMounted) {

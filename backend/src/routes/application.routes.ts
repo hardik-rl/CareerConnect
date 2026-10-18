@@ -13,7 +13,7 @@ import {
 const router = Router();
 
 router.get(
-  "/my-applications",
+  "/applications",
   authenticate,
   authorize("JOB_SEEKER"),
   getMyApplications

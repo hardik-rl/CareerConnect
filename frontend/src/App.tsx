@@ -35,6 +35,7 @@ import PostNewJob from "./employer/pages/PostNewJob";
 import ResetPassword from "./auth/ResetPassword";
 import ForgotPassword from "./auth/ForgotPassword";
 import JobSeekerJobDetails from "./jobseeker/pages/JobDetails";
+import EmployerJobDetails from "./employer/pages/JobDetails";
 
 function App() {
 
@@ -128,15 +129,16 @@ function App() {
           </Route> */}
 
           <Route path="/employer" element={<EmployerLayout />}>
-            <Route path="profile" element={<EmployerProfile />} />
+            <Route path="applications/:id" element={<EmployerProfile />} />
             <Route path="dashboard" element={<EmployerDashboard />} />
             <Route path="applications" element={<EmployerApplications />} />
             <Route path="managejobs" element={<EmployerManageJobs />} />
-            <Route path="postnewjob" element={<PostNewJob />} />
+            {/* <Route path="postnewjob" element={<PostNewJob />} /> */}
+            <Route path="jobs/create" element={<PostNewJob />} />
+            <Route path="jobs/:id/edit" element={<EmployerJobDetails />} />
+
+            <Route path="*" element={<NotFound />} />
           </Route>
-
-          <Route path="*" element={<NotFound />} />
-
         </Routes>
       </BrowserRouter>
     </>

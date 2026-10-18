@@ -59,9 +59,10 @@ app.get("/api/test-db", async (_req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/auth", passwordRoutes);
-app.use("/api", applicationRoutes);
+app.use("/api/applications", applicationRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/companies", companyRoutes);
+// app.use("/api/applications", applicationRoutes);
 
 app.listen(PORT, () => {
   console.log(`CareerConnect server running on port ${PORT}`);

@@ -28,22 +28,70 @@
 
 // export default router;
 
+// import { Router } from "express";
+// import { getJobs, getJobById, createJob, getEmployerDashboard } from "../controllers/job.controller.js";
+// import { authenticate, authorize } from "../middleware/auth.middleware.js";
+
+// const router = Router();
+
+// // Public APIs
+// router.get("/", getJobs);
+// router.get("/:id", getJobById);
+
+// // Employer API
+// router.post(
+//   "/employer/dashboard",
+//   authenticate,
+//   authorize("EMPLOYER"),
+//   getEmployerDashboard,
+//   createJob
+// );
+
+// export default router;
+
+
 import { Router } from "express";
-import { getJobs, getJobById, createJob } from "../controllers/job.controller.js";
-import { authenticate, authorize } from "../middleware/auth.middleware.js";
+import {
+  getJobs,
+  getJobById,
+  createJob,
+  getEmployerDashboard,
+  updateJob,
+  createJob,
+} from "../controllers/job.controller.js";
+import {
+  authenticate,
+  authorize,
+} from "../middleware/auth.middleware.js";
 
 const router = Router();
 
-// Public APIs
+// Public routes
 router.get("/", getJobs);
+
+// Employer dashboard — keep before dynamic routes
+router.get(
+  "/employer/dashboard",
+  authenticate,
+  authorize("EMPLOYER"),
+  getEmployerDashboard,
+);
+
 router.get("/:id", getJobById);
 
-// Employer API
+// Employer creates a job
 router.post(
   "/",
   authenticate,
   authorize("EMPLOYER"),
-  createJob
+  createJob,
+);
+
+router.put(
+  "/:id",
+  authenticate,
+  authorize("EMPLOYER"),
+  updateJob,
 );
 
 export default router;

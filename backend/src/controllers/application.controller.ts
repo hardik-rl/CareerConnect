@@ -278,3 +278,226 @@ export const updateApplicationStatus = async (
     });
   }
 };
+
+
+export const getEmployerApplications = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  try {
+    const company = await prisma.company.findUnique({
+      where: { userId: req.user!.userId },
+    });
+
+    if (!company) {
+      return res.status(404).json({
+        success: false,
+        message: "Company profile not found",
+      });
+    }
+
+    const applications = await prisma.application.findMany({
+      where: {
+        job: {
+          companyId: company.id,
+        },
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+        job: {
+          select: {
+            id: true,
+            title: true,
+            company: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: applications,
+    });
+  } catch (error) {
+    console.error("Get employer applications error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to fetch applications",
+    });
+  }
+};
+
+export const updateEmployerApplicationStatus = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  const allowedStatuses = [
+    "PENDING",
+    "REVIEWED",
+    "SHORTLISTED",
+    "REJECTED",
+    "ACCEPTED",
+  ] as const;
+
+  const { status } = req.body as { status?: string };
+
+  if (!status || !allowedStatuses.includes(status as (typeof allowedStatuses)[number])) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid application status",
+    });
+  }
+
+  try {
+    const company = await prisma.company.findUnique({
+      where: { userId: req.user!.userId },
+    });
+
+    if (!company) {
+      return res.status(404).json({
+        success: false,
+        message: "Company profile not found",
+      });
+    }
+
+    const application = await prisma.application.findUnique({
+      where: { id: req.params.id },
+      include: {
+        job: {
+          select: {
+            companyId: true,
+          },
+        },
+      },
+    });
+
+    if (!application) {
+      return res.status(404).json({
+        success: false,
+        message: "Application not found",
+      });
+    }
+
+    if (application.job.companyId !== company.id) {
+      return res.status(403).json({
+        success: false,
+        message: "You can only update applications for your own jobs",
+      });
+    }
+
+    const updatedApplication = await prisma.application.update({
+      where: { id: application.id },
+      data: { status: status as (typeof allowedStatuses)[number] },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Application status updated successfully",
+      data: updatedApplication,
+    });
+  } catch (error) {
+    console.error("Update application status error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to update application status",
+    });
+  }
+};
+
+
+
+export const getEmployerApplicationById = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  try {
+    const applicationId = req.params.id;
+
+    const company = await prisma.company.findUnique({
+      where: { userId: req.user!.userId },
+    });
+
+    if (!company) {
+      return res.status(404).json({
+        success: false,
+        message: "Company profile not found",
+      });
+    }
+
+    const application = await prisma.application.findFirst({
+      where: {
+        id: applicationId,
+        job: {
+          companyId: company.id,
+        },
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            profile: {
+              select: {
+                headline: true,
+                bio: true,
+                skills: true,
+                experience: true,
+                location: true,
+                resumeUrl: true,
+                linkedinUrl: true,
+                githubUrl: true,
+              },
+            },
+          },
+        },
+        job: {
+          select: {
+            id: true,
+            title: true,
+            location: true,
+            company: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!application) {
+      return res.status(404).json({
+        success: false,
+        message: "Application not found for your company",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: application,
+    });
+  } catch (error) {
+    console.error("Get employer application details error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to load candidate profile",
+    });
+  }
+};

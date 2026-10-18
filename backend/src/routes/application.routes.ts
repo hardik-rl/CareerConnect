@@ -3,7 +3,10 @@ import {
   applyForJob,
   getMyApplications,
   getAllApplicationsForAdmin,
-  updateApplicationStatus
+  updateApplicationStatus,
+  getEmployerApplications,
+  updateEmployerApplicationStatus,
+  getEmployerApplicationById
 } from "../controllers/application.controller.js";
 import {
   authenticate,
@@ -16,7 +19,15 @@ router.get(
   "/applications",
   authenticate,
   authorize("JOB_SEEKER"),
-  getMyApplications
+  getMyApplications,
+  getEmployerApplications
+);
+
+router.patch(
+  "/:id/status",
+  authenticate,
+  authorize("EMPLOYER"),
+  updateEmployerApplicationStatus,
 );
 
 router.post(
@@ -44,4 +55,27 @@ router.patch(
 );
 
 
+router.get(
+  "/employer",
+  authenticate,
+  authorize("EMPLOYER"),
+  getEmployerApplications,
+);
+
+router.patch(
+  "/:id/status",
+  authenticate,
+  authorize("EMPLOYER"),
+  updateEmployerApplicationStatus,
+);
+
+router.get(
+  "/employer/:id",
+  authenticate,
+  authorize("EMPLOYER"),
+  getEmployerApplicationById,
+);
+
+
 export default router;
+

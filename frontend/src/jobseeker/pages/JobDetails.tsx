@@ -187,38 +187,32 @@ const JobSeekerJobDetails = () => {
   //   }
   // };
 
+const handleApply = async () => {
+  if (!job) return;
 
-  const handleApply = async () => {
-    if (!job?.id || applying || isApplied) return;
+  try {
+    setApplying(true);
+    setApplyMessage("");
 
-    try {
-      setApplying(true);
-      setApplyMessage("");
+    await api.post("/applications", {
+      jobId: job.id,
+    });
 
-      await api.post("/apply", {
-        jobId: job.id,
-        coverLetter:
-          "I am interested in this role and have experience with React.js and JavaScript.",
-      });
-
-      setIsApplied(true);
-      setApplyMessage("Application submitted successfully!");
-    } catch (error: any) {
-      const status = error?.response?.status;
-      const message =
-        error?.response?.data?.message ||
-        "Unable to submit your application. Please try again.";
-
-      if (status === 409) {
-        setIsApplied(true);
-        setApplyMessage("You have already applied for this job.");
-      } else {
-        setApplyMessage(message);
-      }
-    } finally {
-      setApplying(false);
+    setIsApplied(true);
+    setApplyMessage("Application submitted successfully!");
+  } catch (error: any) {
+    if (error.response?.status === 409) {
+      setApplyMessage("You have already applied for this job.");
+    } else {
+      setApplyMessage(
+        error.response?.data?.message ||
+          "Failed to submit application."
+      );
     }
-  };
+  } finally {
+    setApplying(false);
+  }
+};
 
 
 

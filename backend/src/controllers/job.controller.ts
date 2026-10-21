@@ -3,6 +3,29 @@ import { z } from "zod";
 import prisma from "../lib/prisma.js";
 import type { AuthRequest } from "../middleware/auth.middleware.js";
 
+// const createJobInput = z.object({
+//   title: z.string().trim().min(1).max(200),
+//   description: z.string().trim().min(1).max(10000),
+//   requirements: z.array(z.string().trim().min(1).max(200)).max(50),
+//   location: z.string().trim().min(1).max(200),
+//   salaryMin: z.number().int().nonnegative().nullable(),
+//   salaryMax: z.number().int().nonnegative().nullable(),
+//   jobType: z.enum([
+//     "FULL_TIME",
+//     "PART_TIME",
+//     "CONTRACT",
+//     "INTERNSHIP",
+//     "FREELANCE",
+//   ]),
+//   experienceLevel: z.enum([
+//     "ENTRY",
+//     "JUNIOR",
+//     "MID",
+//     "SENIOR",
+//     "LEAD",
+//   ]),
+// });
+
 const createJobInput = z.object({
   title: z.string().trim().min(1).max(200),
   description: z.string().trim().min(1).max(10000),
@@ -24,6 +47,7 @@ const createJobInput = z.object({
     "SENIOR",
     "LEAD",
   ]),
+  isActive: z.boolean().optional(),
 });
 
 export const createJob = async (
@@ -169,6 +193,8 @@ export const getEmployerDashboard = async (
       select: {
         id: true,
         name: true,
+        isActive: true,
+        createdAt: true,
       },
     });
 
@@ -195,30 +221,30 @@ export const getEmployerDashboard = async (
 
     const applications = jobIds.length
       ? await prisma.application.findMany({
-          where: {
-            jobId: {
-              in: jobIds,
+        where: {
+          jobId: {
+            in: jobIds,
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
             },
           },
-          orderBy: {
-            createdAt: "desc",
-          },
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-              },
-            },
-            job: {
-              select: {
-                id: true,
-                title: true,
-              },
+          job: {
+            select: {
+              id: true,
+              title: true,
             },
           },
-        })
+        },
+      })
       : [];
 
     const countStatus = (status: string) =>
@@ -228,8 +254,16 @@ export const getEmployerDashboard = async (
       success: true,
       data: {
         company,
+        // stats: {
+        //   activeJobs: jobs.filter((job) => job.isActive).length,
+        //   applications: applications.length,
+        //   shortlisted: countStatus("SHORTLISTED"),
+        //   accepted: countStatus("ACCEPTED"),
+        // },
+
         stats: {
           activeJobs: jobs.filter((job) => job.isActive).length,
+          inactiveJobs: jobs.filter((job) => !job.isActive).length,
           applications: applications.length,
           shortlisted: countStatus("SHORTLISTED"),
           accepted: countStatus("ACCEPTED"),
@@ -267,6 +301,19 @@ export const updateJob = async (
   res: Response,
 ) => {
   const parsed = createJobInput.safeParse(req.body);
+
+  console.log("Request body:", req.body);
+
+  if (!parsed.success) {
+    return res.status(400).json({
+      success: false,
+      message: "Please check the job details",
+      errors: parsed.error.flatten().fieldErrors,
+    });
+  }
+
+  console.log("Parsed data:", parsed.data);
+  console.log("isActive received:", parsed.data.isActive);
 
   if (!parsed.success) {
     return res.status(400).json({
@@ -329,6 +376,8 @@ export const updateJob = async (
       },
     });
 
+    console.log("Updated job isActive:", updatedJob.isActive);
+
     return res.status(200).json({
       success: true,
       message: "Job updated successfully",
@@ -340,6 +389,49 @@ export const updateJob = async (
     return res.status(500).json({
       success: false,
       message: "Unable to update job",
+    });
+  }
+};
+
+
+
+export const getEmployerJobs = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  try {
+    const company = await prisma.company.findUnique({
+      where: {
+        userId: req.user!.userId,
+      },
+    });
+
+    if (!company) {
+      return res.status(404).json({
+        success: false,
+        message: "Company profile not found",
+      });
+    }
+
+    const jobs = await prisma.job.findMany({
+      where: {
+        companyId: company.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: jobs,
+    });
+  } catch (error) {
+    console.error("Get employer jobs error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to fetch employer jobs",
     });
   }
 };

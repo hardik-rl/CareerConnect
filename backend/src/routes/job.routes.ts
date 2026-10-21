@@ -57,7 +57,7 @@ import {
   createJob,
   getEmployerDashboard,
   updateJob,
-  createJob,
+  getEmployerJobs,
 } from "../controllers/job.controller.js";
 import {
   authenticate,
@@ -94,4 +94,11 @@ router.put(
   updateJob,
 );
 
+
+router.get(
+  "/employer/my-jobs",
+  authenticate,
+  authorize("EMPLOYER"),
+  getEmployerJobs,
+);
 export default router;

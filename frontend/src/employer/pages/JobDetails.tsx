@@ -660,6 +660,7 @@ export default function EditJob() {
         setError("");
 
         const response = await api.get(`/jobs/${id}`);
+        
         const job: JobResponse = response.data.data;
 
         if (cancelled) return;
@@ -689,7 +690,7 @@ export default function EditJob() {
         if (!cancelled) {
           setError(
             apiError.response?.data?.message ??
-              "Unable to load job details.",
+            "Unable to load job details.",
           );
         }
       } finally {
@@ -767,6 +768,18 @@ export default function EditJob() {
       return;
     }
 
+    // const payload = {
+    //   title: formData.jobTitle.trim(),
+    //   location: formData.location.trim(),
+    //   description: formData.jobDescription.trim(),
+    //   requirements,
+    //   jobType: formData.employmentType,
+    //   experienceLevel: formData.experience,
+    //   salaryMin,
+    //   salaryMax,
+    //   isActive,
+    // };
+
     const payload = {
       title: formData.jobTitle.trim(),
       location: formData.location.trim(),
@@ -782,8 +795,10 @@ export default function EditJob() {
     try {
       setSubmitting(true);
 
-      await api.put(`/jobs/${id}`, payload);
+      // await api.put(`/jobs/${id}`, payload);
 
+      
+      await api.put(`/jobs/${id}`, payload);
       setMessage("Job updated successfully!");
 
       navigate("/employer/managejobs", {
@@ -806,8 +821,8 @@ export default function EditJob() {
 
       setError(
         firstFieldError ??
-          apiError.response?.data?.message ??
-          "Unable to update job. Please check the details and try again.",
+        apiError.response?.data?.message ??
+        "Unable to update job. Please check the details and try again.",
       );
     } finally {
       setSubmitting(false);
@@ -1038,7 +1053,7 @@ export default function EditJob() {
               </p>
             </div>
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <label className={labelClass}>Job status</label>
               <select
                 value={isActive ? "ACTIVE" : "DRAFT"}
@@ -1049,6 +1064,26 @@ export default function EditJob() {
               >
                 <option value="ACTIVE">Published / Active</option>
                 <option value="DRAFT">Draft / Inactive</option>
+              </select>
+            </div> */}
+
+            <div className="space-y-2">
+              <label htmlFor="jobStatus" className={labelClass}>
+                Job status
+              </label>
+
+              <select
+                value={isActive ? "ACTIVE" : "INACTIVE"}
+                onChange={(event) =>
+                {
+                  console.log("Job status changed to:", event.target.value);
+                  setIsActive(event.target.value === "ACTIVE")
+                }
+                }
+                className={inputClass}
+              >
+                <option value="ACTIVE">Active / Published</option>
+                <option value="INACTIVE">Inactive</option>
               </select>
             </div>
 

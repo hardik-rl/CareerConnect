@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import { MoveLeft } from "lucide-react";
 
 type JobFormData = {
   jobTitle: string;
@@ -15,17 +16,17 @@ type JobFormData = {
 };
 
 const initialFormData: JobFormData = {
-  jobTitle: "Senior React Developer",
-  company: "TechForge",
-  location: "Remote India",
-  employmentType: "FULL_TIME",
-  experience: "SENIOR",
-  salaryRange: "12-18",
-  skills: "React.js, TypeScript, JavaScript, HTML5, CSS3",
+  jobTitle: "",
+  company: "",
+  location: "",
+  employmentType: "",
+  experience: "",
+  salaryRange: "",
+  skills: "",
   jobDescription:
-    "We are looking for a Senior React Developer to join our product team and build high-quality user experiences.",
+    "",
   responsibilities:
-    "Build reusable components\nCollaborate with design and backend teams\nImprove performance and accessibility",
+    "",
 };
 
 const inputClass =
@@ -162,6 +163,9 @@ export default function PostNewJob() {
     <div className="min-h-screen bg-[#F8F9FB] px-4 py-8 font-sans text-slate-900 md:py-10">
       <div className="space-y-8">
         <div className="space-y-1">
+          <button className="flex items-center gap-2 cursor-pointer mb-3 text-md font-medium text-indigo-600 hover:text-indigo-700" onClick={() => navigate("/employer/managejobs")}>
+            <MoveLeft  size={20}/> Back to Manage Jobs
+          </button>
           <h1 className="text-2xl font-bold tracking-tight text-[#0F172A] md:text-3xl">
             Post a Job
           </h1>

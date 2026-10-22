@@ -557,6 +557,7 @@
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../services/api";
+import { MoveLeft } from "lucide-react";
 
 type JobFormData = {
   jobTitle: string;
@@ -862,12 +863,9 @@ export default function EditJob() {
     <div className="min-h-screen bg-[#F8F9FB] px-4 py-8 font-sans text-slate-900 md:py-10">
       <div className="space-y-8">
         <div className="space-y-1">
-          <button
-            type="button"
-            onClick={() => navigate("/employer/managejobs")}
-            className="mb-3 text-sm font-medium text-indigo-600 hover:text-indigo-700"
-          >
-            ← Back to Manage Jobs
+
+           <button className="flex items-center gap-2 cursor-pointer mb-3 text-md font-medium text-indigo-600 hover:text-indigo-700" onClick={() => navigate("/employer/managejobs")}>
+            <MoveLeft  size={20}/> Back to Manage Jobs
           </button>
 
           <h1 className="text-2xl font-bold tracking-tight text-[#0F172A] md:text-3xl">

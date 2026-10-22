@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './components/Home'
 import JobList from './components/JobList'
 import JobDetails from "./components/JobDetails";
-import PublicJobSeekerJobDetails from "./jobseeker/pages/JobDetails";
+// import PublicJobSeekerJobDetails from "./jobseeker/pages/JobDetails";
 import Companies from "./components/Companies";
 import CompaniesDetails from "./components/CompaniesDetails";
 import About from "./components/About";
@@ -36,6 +36,7 @@ import ResetPassword from "./auth/ResetPassword";
 import ForgotPassword from "./auth/ForgotPassword";
 import JobSeekerJobDetails from "./jobseeker/pages/JobDetails";
 import EmployerJobDetails from "./employer/pages/JobDetails";
+import EmployerApplicationsDetails from "./employer/pages/EmployerApplicationsDetails";
 
 function App() {
 
@@ -71,19 +72,6 @@ function App() {
           />
 
           {/* Admin Routes */}
-          {/* <Route path="/admin" element={<HeaderProvider><AdminLayout /></HeaderProvider>}>
-            <Route
-              index 
-              element={<AdminDashboard />}
-            />
-
-            <Route path="users" element={<Users />} />
-            <Route path="companies" element={<CompaniesPage />} />
-            <Route path="jobs" element={<JobsPage />} />
-            <Route path="applications" element={<ApplicationsPage />} />
-            <Route path="reports" element={<ReportsPage />} />
-            <Route path="settings" element={<SettingsPage />} />
-          </Route> */}
           <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
             <Route path="/admin" element={<HeaderProvider>
               <AdminLayout /></HeaderProvider>}>
@@ -99,16 +87,6 @@ function App() {
           </Route>
 
           {/* Job Seeker Role */}
-          {/* <Route element={<ProtectedRoute allowedRoles={["JOB_SEEKER"]} />}>
-            <Route path="/job-seeker" element={<HeaderProvider>
-              <JobSeekerLayout /></HeaderProvider>}>
-              <Route path="/job-seeker/dashboard" element={<JobSeekerDashboard />} />
-              <Route path="/job-seeker/jobs/:id" element={<PublicJobSeekerJobDetails />} />
-              <Route path="/job-seeker/profile" element={<JobSeekerProfile />} />
-              <Route path="/job-seeker/applications" element={<JobSeekerApplications />} />
-            </Route>
-          </Route> */}
-
           <Route path="/job-seeker" element={<JobSeekerLayout />}>
             <Route path="dashboard" element={<JobSeekerDashboard />} />
             <Route path="/job-seeker/jobs/:id" element={<JobSeekerJobDetails />} />
@@ -116,27 +94,20 @@ function App() {
             <Route path="applications" element={<JobSeekerApplications />} />
           </Route>
 
-          {/* Employer Role */}
-          {/* <Route element={<ProtectedRoute allowedRoles={["EMPLOYER"]} />}>
-            <Route path="/employer" element={<HeaderProvider>
-              <EmployerLayout /></HeaderProvider>}>
-              <Route path="/employer/profile" element={<EmployerProfile />} />
-              <Route path="/employer/dashboard" element={<EmployerDashboard />} />
-              <Route path="/employer/applications" element={<EmployerApplications />} />
-              <Route path="/employer/managejobs" element={<EmployerManageJobs />} />
-              <Route path="/employer/postnewjob" element={<PostNewJob />} />
-            </Route>
-          </Route> */}
 
+          {/* Employer Role */}
           <Route path="/employer" element={<EmployerLayout />}>
-            <Route path="applications/:id" element={<EmployerProfile />} />
+            <Route path="profile/:id" element={<EmployerProfile />} />
             <Route path="dashboard" element={<EmployerDashboard />} />
             <Route path="applications" element={<EmployerApplications />} />
             <Route path="managejobs" element={<EmployerManageJobs />} />
             {/* <Route path="postnewjob" element={<PostNewJob />} /> */}
             <Route path="jobs/create" element={<PostNewJob />} />
             <Route path="jobs/:id/edit" element={<EmployerJobDetails />} />
-
+            <Route
+              path="applications/:id"
+              element={<EmployerApplicationsDetails />}
+            />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

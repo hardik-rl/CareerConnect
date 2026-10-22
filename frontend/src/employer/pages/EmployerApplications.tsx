@@ -358,7 +358,7 @@ const EmployerApplications = () => {
       setNotice("");
 
       await api.patch(`/applications/${application.id}/status`, {
-        status: newStatus,
+        status: selectedStatuses,
       });
 
       setApplications((previous) =>
@@ -506,14 +506,14 @@ const EmployerApplications = () => {
 
                   <div className="flex flex-wrap items-center gap-2">
                     <Link
-                      to={`/jobs/${application.job.id}`}
+                      to={`/employer/applications/${application.id}`}
                       className="inline-flex h-[32px] items-center justify-center rounded-[8px] bg-[#0e131f] px-4 text-[12px] font-semibold text-white transition hover:bg-[#252b38] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5c5ce0]"
                     >
-                      View Job
+                      View Application
                     </Link>
 
                     <Link
-                      to={`/employer/applications/${application.id}`}
+                      to={`/employer/profile/${application.id}`}
                       className="rounded-lg bg-blue-600 px-3 py-2 text-xs text-white"
                     >
                       View Profile

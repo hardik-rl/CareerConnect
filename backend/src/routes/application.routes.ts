@@ -103,6 +103,7 @@ import {
   authenticate,
   authorize,
 } from "../middleware/auth.middleware.js";
+import { getEmployerDashboard } from "../controllers/job.controller.js";
 
 const router = Router();
 
@@ -150,6 +151,14 @@ router.get(
   authenticate,
   authorize("EMPLOYER"),
   getEmployerApplicationById
+);
+
+// Employer: Dashboard statistics and recent candidates
+router.get(
+  "/employer/dashboard",
+  authenticate,
+  authorize("EMPLOYER"),
+  getEmployerDashboard
 );
 
 // Employer: Update application status

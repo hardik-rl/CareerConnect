@@ -193,7 +193,7 @@ export const getEmployerDashboard = async (
       select: {
         id: true,
         name: true,
-        isActive: true,
+        // isActive: true,
         createdAt: true,
       },
     });

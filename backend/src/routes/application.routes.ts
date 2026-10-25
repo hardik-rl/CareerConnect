@@ -95,6 +95,8 @@ import {
   getEmployerApplications,
   updateEmployerApplicationStatus,
   getEmployerApplicationById,
+  getJobSeekerApplicationsById,
+  getMyApplicationById,
 } from "../controllers/application.controller.js";
 
 import {
@@ -119,6 +121,20 @@ router.get(
   authorize("JOB_SEEKER"),
   getMyApplications
 );
+
+router.get(
+  "/me/:id",
+  authenticate,
+  authorize("JOB_SEEKER"),
+  getMyApplicationById
+  // getJobSeekerApplicationsById
+);
+// router.get(
+//   "/job-seeker/:id",
+//   authenticate,
+//   authorize("EMPLOYER", "ADMIN"),
+//   getJobSeekerApplicationsById
+// );
 
 // Employer: View applications
 router.get(

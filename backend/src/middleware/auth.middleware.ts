@@ -50,14 +50,37 @@ export const authenticate = (
 
 
 
-export const authorize = (
-  ...allowedRoles: Array<"JOB_SEEKER" | "EMPLOYER" | "ADMIN">
-) => {
-  return (
-    req: AuthRequest,
-    res: Response,
-    next: NextFunction
-  ) => {
+// export const authorize = (
+//   ...allowedRoles: Array<"JOB_SEEKER" | "EMPLOYER" | "ADMIN">
+// ) => {
+  
+//   return (
+//     req: AuthRequest,
+//     res: Response,
+//     next: NextFunction
+//   ) => {
+//     if (!req.user) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "Authentication required",
+//       });
+//     }
+
+//     if (!allowedRoles.includes(req.user.role)) {
+//       return res.status(403).json({
+//         success: false,
+//         message: "Access denied",
+//       });
+//     }
+
+//     next();
+//     console.log("User role:", req.user?.role);
+// console.log("Allowed roles:", allowedRoles);
+//   };
+// };
+
+export const authorize = (...allowedRoles: string[]) => {
+  return (req: AuthRequest, res: Response, next: NextFunction) => {
     if (!req.user) {
       return res.status(401).json({
         success: false,

@@ -642,7 +642,7 @@ console.log("Active filter:", activeFilter);
                   {/* View job */}
                   <div className="mt-4 md:mt-0 md:flex md:justify-end">
                     <Link
-                      to={`/jobs/${application.jobId}`}
+                      to={`/job-seeker/applications/${application.id}`}
                       className="inline-flex h-[34px] w-full items-center justify-center rounded-[8px] bg-[#0e131f] text-[12px] font-semibold text-white transition hover:bg-[#252b38] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5c5ce0] sm:w-[100px]"
                     >
                       View Job

@@ -501,3 +501,89 @@ export const getEmployerApplicationById = async (
     });
   }
 };
+
+
+export const getJobSeekerApplicationsById = async (req: any, res: any) => {
+  try {
+    const { id } = req.params;
+
+    const applications = await prisma.application.findMany({
+      where: {
+        userId: id,
+      },
+      include: {
+        job: {
+          include: {
+            company: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      count: applications.length,
+      applications,
+    });
+  } catch (error) {
+    console.error("Get job seeker applications error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch job seeker applications",
+    });
+  }
+};
+
+
+// Job Seeker: Get single application details
+export const getMyApplicationById = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user!.userId;
+
+    const application = await prisma.application.findFirst({
+      where: {
+        id,
+        userId, // Only the logged-in user's application
+      },
+      include: {
+        job: {
+          include: {
+            company: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!application) {
+      return res.status(404).json({
+        success: false,
+        message: "Application not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: application,
+    });
+  } catch (error) {
+    console.error("Get my application details error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to load application details",
+    });
+  }
+};

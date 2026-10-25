@@ -37,6 +37,7 @@ import ForgotPassword from "./auth/ForgotPassword";
 import JobSeekerJobDetails from "./jobseeker/pages/JobDetails";
 import EmployerJobDetails from "./employer/pages/JobDetails";
 import EmployerApplicationsDetails from "./employer/pages/EmployerApplicationsDetails";
+import JobSeekerApplicationsDetails from "./jobseeker/pages/JobSeekerApplicationsDetails";
 
 function App() {
 
@@ -92,6 +93,10 @@ function App() {
             <Route path="/job-seeker/jobs/:id" element={<JobSeekerJobDetails />} />
             <Route path="profile" element={<JobSeekerProfile />} />
             <Route path="applications" element={<JobSeekerApplications />} />
+            <Route
+              path="applications/:id"
+              element={<JobSeekerApplicationsDetails />}
+            />
           </Route>
 
 

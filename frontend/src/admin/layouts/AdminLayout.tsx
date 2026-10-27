@@ -2,7 +2,7 @@ import AdminSidebar from "../components/AdminSidebar";
 import AdminHeader from "../components/AdminHeader";
 import { useState } from "react";
 import { useHeader } from "../context/HeaderContext";
-import AdminDashboard from "../components/AdminDashboard";
+import { Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -22,7 +22,7 @@ const AdminLayout = () => {
                 />
 
                 <main className="bg-[#f9fafc]">
-                    <AdminDashboard />
+                    <Outlet />
                 </main>
             </div>
         </div>

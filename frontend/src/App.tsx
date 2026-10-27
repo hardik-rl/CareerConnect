@@ -85,6 +85,7 @@ function App() {
               <Route path="settings" element={<SettingsPage />} />
               <Route path="profile" element={<Profile />} />
             </Route>
+              <Route path="*" element={<NotFound />} />
           </Route>
 
           {/* Job Seeker Role */}

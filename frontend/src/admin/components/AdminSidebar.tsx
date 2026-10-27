@@ -7,6 +7,10 @@ interface AdminSidebarProps {
 
 const menuItems = [
   {
+    label: "Users",
+    path: "/admin/users",
+  },
+   {
     label: "Companies",
     path: "/admin/companies",
   },

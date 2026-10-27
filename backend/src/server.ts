@@ -8,6 +8,7 @@ import passwordRoutes from "./routes/passwordRoutes.js";
 import applicationRoutes from "./routes/application.routes.js";
 import jobRoutes from "./routes/job.routes.js";
 import companyRoutes from "./routes/company.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 dotenv.config();
 
@@ -63,6 +64,7 @@ app.use("/api/applications", applicationRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/companies", companyRoutes);
 // app.use("/api/applications", applicationRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.listen(PORT, () => {
   console.log(`CareerConnect server running on port ${PORT}`);

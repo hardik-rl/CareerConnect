@@ -1,0 +1,47 @@
+Admin Side કયા ક્રમમાં બનાવવું?
+01
+
+Admin Dashboard
+
+Total users, job seekers, employers, companies, jobs અને applications ના live counts. Recent jobs અને recent applications પણ બતાવવાનાં.
+Start here
+
+
+
+02
+
+Users Management
+
+બધા users ની list, search, role filter, details અને account active/deactivate કરવાની functionality.
+
+
+
+03
+
+Companies Management
+
+Company list, company details અને company status management.
+
+
+
+04
+
+Jobs Management
+
+બધા jobs જોવી, search/filter કરવી, inactive jobs ચેક કરવી અને duplicate jobs delete કરવી. Admin job edit/delete કરી શકે તે backend permissions પણ verify કરવાં.
+
+
+
+05
+
+Applications Management
+
+બધી applications, candidate/job details અને application status. Employer ના હાલના flow ને અસર ન થાય તેની ખાતરી કરવી.
+
+
+
+06
+
+Reports & Settings
+
+Reports માં database આધારિત statistics અને Settings માં હાલની functionality પ્રમાણે configuration.
